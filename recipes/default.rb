@@ -47,7 +47,7 @@ nova = search(:node, "roles:nova-api-ec2 AND chef_environment:#{node.chef_enviro
 if nova.length > 0
   nova_ec2_url = nova[0]["nova"]["ec2"]["publicURL"]
 else
-  if node.has_key?("nova")
+  if node.has_key?("nova") and node["nova"].has_key?("ec2")
     nova_ec2_url = node["nova"]["ec2"]["publicURL"]
   else
     nova_ec2_url = ""
