@@ -43,6 +43,17 @@ else
   ec2_secret = node["credentials"]["EC2"]["admin"]["secret"]
 end
 
+nova = search(:node, "roles:nova-api-ec2 AND chef_environment:#{node.chef_environment}")
+if nova.length > 0
+  nova_ec2_url = nova[0]["nova"]["ec2"]["publicURL"]
+else
+  if node.has_key?("nova")
+    nova_ec2_url = node["nova"]["ec2"]["publicURL"]
+  else
+    nova_ec2_url = ""
+  end
+end
+
 template "/opt/exerstack/localrc" do
   source "localrc.erb"
   owner "root"
@@ -56,6 +67,7 @@ template "/opt/exerstack/localrc" do
     "keystone_admin_url" => keystone_admin_url,
     "keystone_region_name" => "RegionOne",
     "keystone_admin_token" => keystone_admin_token,
+    "ec2_url" => nova_ec2_url,
     "ec2_access" => ec2_access,
     "ec2_secret" => ec2_secret
   )
