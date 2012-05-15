@@ -54,6 +54,12 @@ else
   end
 end
 
+swift_authtype = "swauth"
+swift = search(:node, "roles:swift-proxy-server and chef_environment:#{node.chef_environment}")
+if swift.length > 0
+  swift_authtype = swift[0]["swift"]["authmode"]
+end
+
 template "/opt/exerstack/localrc" do
   source "localrc.erb"
   owner "root"
@@ -69,7 +75,8 @@ template "/opt/exerstack/localrc" do
     "keystone_admin_token" => keystone_admin_token,
     "ec2_url" => nova_ec2_url,
     "ec2_access" => ec2_access,
-    "ec2_secret" => ec2_secret
+    "ec2_secret" => ec2_secret,
+    "swift_authtype" => swift_authtype
   )
 end
 
