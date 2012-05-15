@@ -54,10 +54,13 @@ else
   end
 end
 
-swift_authtype = "swauth"
 swift = search(:node, "roles:swift-proxy-server and chef_environment:#{node.chef_environment}")
 if swift.length > 0
+  Chef::Log.info("exerstack::default/swift-proxy-server: using search")
   swift_authtype = swift[0]["swift"]["authmode"]
+else
+  Chef::Log.info("exerstack::default/swift-proxy-server: NOT using search")
+  swift_authtype = node["swift"]["authmode"]
 end
 
 template "/opt/exerstack/localrc" do
