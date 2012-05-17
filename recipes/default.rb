@@ -24,18 +24,18 @@ end
 
 keystone = search(:node, "roles:keystone AND chef_environment:#{node.chef_environment}")
 if keystone.length > 0
-  keystone_admin_username = "admin"
-  keystone_admin_password = keystone[0]['keystone']['users']['admin']['password']
-  keystone_admin_tenantname = keystone[0]['keystone']['users']['admin']['default_tenant']
+  keystone_admin_username = keystone[0]['keystone']['admin_user']
+  keystone_admin_password = keystone[0]['keystone']['users'][keystone_admin_username]['password']
+  keystone_admin_tenantname = keystone[0]['keystone']['users'][keystone_admin_username]['default_tenant']
   keystone_internal_url = keystone[0]['keystone']['internalURL']
   keystone_admin_url = keystone[0]['keystone']['adminURL']
   keystone_admin_token = keystone[0]['keystone']['admin_token']
   ec2_access = keystone[0]["credentials"]["EC2"]["admin"]["access"]
   ec2_secret = keystone[0]["credentials"]["EC2"]["admin"]["secret"]
 else
-  keystone_admin_username = "admin"
-  keystone_admin_password = node['keystone']['users']['admin']['password']
-  keystone_admin_tenantname = node['keystone']['users']['admin']['default_tenant']
+  keystone_admin_username = ['keystone']['admin_user']
+  keystone_admin_password = node['keystone']['users'][keystone_admin_username]['password']
+  keystone_admin_tenantname = node['keystone']['users'][keystone_admin_username]['default_tenant']
   keystone_internal_url = node['keystone']['internalURL']
   keystone_admin_url = node['keystone']['adminURL']
   keystone_admin_token = node['keystone']['admin_token']
