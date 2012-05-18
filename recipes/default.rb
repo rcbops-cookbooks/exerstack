@@ -33,7 +33,7 @@ if keystone.length > 0
   ec2_access = keystone[0]["credentials"]["EC2"]["admin"]["access"]
   ec2_secret = keystone[0]["credentials"]["EC2"]["admin"]["secret"]
 else
-  keystone_admin_username = ['keystone']['admin_user']
+  keystone_admin_username = node['keystone']['admin_user']
   keystone_admin_password = node['keystone']['users'][keystone_admin_username]['password']
   keystone_admin_tenantname = node['keystone']['users'][keystone_admin_username]['default_tenant']
   keystone_internal_url = node['keystone']['internalURL']
