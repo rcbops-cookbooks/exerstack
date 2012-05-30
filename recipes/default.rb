@@ -43,16 +43,7 @@ else
   ec2_secret = node["credentials"]["EC2"]["admin"]["secret"]
 end
 
-nova = search(:node, "roles:nova-api-ec2 AND chef_environment:#{node.chef_environment}")
-if nova.length > 0
-  nova_ec2_url = nova[0]["nova"]["ec2"]["publicURL"]
-else
-  if node.has_key?("nova") and node["nova"].has_key?("ec2")
-    nova_ec2_url = node["nova"]["ec2"]["publicURL"]
-  else
-    nova_ec2_url = ""
-  end
-end
+ec2_public_endpoint = get_bind_endpoint("nova", "ec2-public")
 
 swift = search(:node, "roles:swift-proxy-server and chef_environment:#{node.chef_environment}")
 if swift.length > 0
@@ -76,7 +67,7 @@ template "/opt/exerstack/localrc" do
     "keystone_admin_url" => keystone_admin_url,
     "keystone_region_name" => "RegionOne",
     "keystone_admin_token" => keystone_admin_token,
-    "ec2_url" => nova_ec2_url,
+    "ec2_url" => ec2_public_endpoint["uri"],
     "ec2_access" => ec2_access,
     "ec2_secret" => ec2_secret,
     "swift_authtype" => swift_authtype
