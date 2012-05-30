@@ -45,13 +45,12 @@ end
 
 ec2_public_endpoint = get_bind_endpoint("nova", "ec2-public")
 
-swift = search(:node, "roles:swift-proxy-server and chef_environment:#{node.chef_environment}")
-if swift.length > 0
-  Chef::Log.info("exerstack::default/swift-proxy-server: using search")
-  swift_authtype = swift[0]["swift"]["authmode"]
+# This is ghetto.. but i am trying to get nova allinone working
+swift = get_settings_by_role("swift-proxy-server", "swift")
+if swift.nil?
+  swift_authmode = "swauth"
 else
-  Chef::Log.info("exerstack::default/swift-proxy-server: NOT using search")
-  swift_authtype = node["swift"]["authmode"]
+  swift_authmode = swift["authmode"]
 end
 
 template "/opt/exerstack/localrc" do
@@ -70,7 +69,7 @@ template "/opt/exerstack/localrc" do
     "ec2_url" => ec2_public_endpoint["uri"],
     "ec2_access" => ec2_access,
     "ec2_secret" => ec2_secret,
-    "swift_authtype" => swift_authtype
+    "swift_authtype" => swift_authmode
   )
 end
 
