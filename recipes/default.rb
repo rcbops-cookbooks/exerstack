@@ -43,15 +43,14 @@ else
   ec2_secret = node["credentials"]["EC2"]["admin"]["secret"]
 end
 
-nova = search(:node, "roles:nova-api-ec2 AND chef_environment:#{node.chef_environment}")
-if nova.length > 0
-  nova_ec2_url = nova[0]["nova"]["ec2"]["publicURL"]
+ec2_public_endpoint = get_bind_endpoint("nova", "ec2-public")
+
+# This is ghetto.. but i am trying to get nova allinone working
+swift = get_settings_by_role("swift-proxy-server", "swift")
+if swift.nil?
+  swift_authmode = "swauth"
 else
-  if node.has_key?("nova") and node["nova"].has_key?("ec2")
-    nova_ec2_url = node["nova"]["ec2"]["publicURL"]
-  else
-    nova_ec2_url = ""
-  end
+  swift_authmode = swift["authmode"]
 end
 
 template "/opt/exerstack/localrc" do
@@ -67,9 +66,10 @@ template "/opt/exerstack/localrc" do
     "keystone_admin_url" => keystone_admin_url,
     "keystone_region_name" => "RegionOne",
     "keystone_admin_token" => keystone_admin_token,
-    "ec2_url" => nova_ec2_url,
+    "ec2_url" => ec2_public_endpoint["uri"],
     "ec2_access" => ec2_access,
-    "ec2_secret" => ec2_secret
+    "ec2_secret" => ec2_secret,
+    "swift_authtype" => swift_authmode
   )
 end
 
