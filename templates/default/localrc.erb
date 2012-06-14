@@ -14,9 +14,9 @@ export EC2_SECRET_KEY=<%= node['credentials']['EC2']['admin']['secret'] %>
 export EC2_ACCESS_KEY=<%= @ec2_access %>
 export EC2_SECRET_KEY=<%= @ec2_secret %>
 <% end -%>
-export SUSPEND_TIMEOUT=120
-export BOOT_TIMEOUT=120
-export ACTIVE_TIMEOUT=240
+export SUSPEND_TIMEOUT=150
+export BOOT_TIMEOUT=150
+export ACTIVE_TIMEOUT=300
 export OS_AUTH_URL=<%= @keystone_internal_url %>
 export OS_PASSWORD=<%= @keystone_admin_password %>
 export OS_USERNAME=<%= @keystone_admin_username %>
