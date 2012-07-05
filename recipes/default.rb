@@ -30,8 +30,17 @@ if keystone.length > 0
   keystone_internal_url = keystone[0]['keystone']['internalURL']
   keystone_admin_url = keystone[0]['keystone']['adminURL']
   keystone_admin_token = keystone[0]['keystone']['admin_token']
-  ec2_access = keystone[0]["credentials"]["EC2"]["admin"]["access"]
-  ec2_secret = keystone[0]["credentials"]["EC2"]["admin"]["secret"]
+
+  # determine if we have a nova-api-ec2 endpoint - if we do not then set the variables to a dummy
+  # value so the template will process correctly.
+  ec2api = search(:node, "roles:nova-api-ec2 AND chef_environment:#{node.chef_environment}")
+  if ec2api.length > 0
+    ec2_access = keystone[0]["credentials"]["EC2"]["admin"]["access"]
+    ec2_secret = keystone[0]["credentials"]["EC2"]["admin"]["secret"]
+  else
+    ec2_access = "undefined"
+    ec2_secret = "undefined"
+  end
 else
   keystone_admin_username = node['keystone']['admin_user']
   keystone_admin_password = node['keystone']['users'][keystone_admin_username]['password']
