@@ -57,6 +57,11 @@ else
 end
 
 ec2_public_endpoint = get_bind_endpoint("nova", "ec2-public")
+# ghetto up a value in ec2_public_endpoint if one doesn't exist
+# you know - so we can run exerstack without an ec2 endpoint
+if ec2_public_endpoint.nil?
+  ec2_public_endpoint={"uri"=>"undefined"}
+end
 
 # This is ghetto.. but i am trying to get nova allinone working
 swift = get_settings_by_role("swift-proxy-server", "swift")
