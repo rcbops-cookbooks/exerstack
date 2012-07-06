@@ -7,3 +7,7 @@ version           "1.0.0"
 %w{ ubuntu fedora }.each do |os|
   supports os
 end
+
+%w{osops-utils keystone}.each do |dep|
+  depends dep
+end
