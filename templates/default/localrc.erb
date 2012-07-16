@@ -22,6 +22,9 @@ export EC2_SECRET_KEY=<%= @ec2_secret %>
 export SUSPEND_TIMEOUT=150
 export BOOT_TIMEOUT=150
 export ACTIVE_TIMEOUT=300
+export DEFAULT_SSH_USER=cirros
+export DEFAULT_IMAGE_NAME=cirros-image
+
 export OS_AUTH_URL=<%= @keystone_internal_url %>
 export OS_PASSWORD=<%= @keystone_admin_password %>
 export OS_USERNAME=<%= @keystone_admin_username %>
