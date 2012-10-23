@@ -19,13 +19,26 @@
 
 # installs and configures the openstack cli exerciser, 'exerstack'
 
+if not node['package_component'].nil?
+  release = node['package_component']
+else
+  release = "essex-final"
+end
+
 case node["platform"]
 when "ubuntu","debian"
-  %w{git bc euca2ools netcat glance-client}.each do |pkg|
+  if release > "essex-final"
+    packages = [ "git", "bc", "euca2ools", "netcat", "python-glanceclient" ]
+  else
+    packages = [ "git", "bc", "euca2ools", "netcat", "glance-client" ]
+  end
+
+  packages.each do |pkg|
     package pkg do
       action :install
     end
   end
+
 when "redhat","centos","fedora","scientific","amazon"
   %w{git bc euca2ools nc openstack-glance openstack-keystone}.each do |pkg|
     package pkg do
