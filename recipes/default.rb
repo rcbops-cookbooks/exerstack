@@ -28,7 +28,7 @@ end
 case node["platform"]
 when "ubuntu","debian"
   if release > "essex-final"
-    packages = [ "git", "bc", "euca2ools", "netcat", "python-glanceclient" ]
+    packages = [ "git", "bc", "euca2ools", "netcat", "python-glanceclient", "python-swiftclient" ]
   else
     packages = [ "git", "bc", "euca2ools", "netcat", "glance-client" ]
   end
@@ -40,7 +40,7 @@ when "ubuntu","debian"
   end
 
 when "redhat","centos","fedora","scientific","amazon"
-  %w{git bc euca2ools nc openstack-glance openstack-keystone}.each do |pkg|
+  %w{git bc euca2ools nc openstack-glance openstack-keystone python-swiftclient}.each do |pkg|
     package pkg do
       action :install
     end
