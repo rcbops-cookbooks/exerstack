@@ -41,9 +41,9 @@ when "ubuntu","debian"
 
 when "redhat","centos","fedora","scientific","amazon"
   if release > "essex-final"
-    packages = [ "git" "bc" "euca2ools" "nc" "openstack-glance" "openstack-keystone" "python-swiftclient" ]
+    packages = [ "git", "bc", "euca2ools", "nc", "openstack-glance", "openstack-keystone", "python-swiftclient" ]
   else
-    packages = [ "git" "bc" "euca2ools" "nc" "openstack-glance" "openstack-keystone" ]
+    packages = [ "git", "bc", "euca2ools", "nc", "openstack-glance", "openstack-keystone" ]
   end
 
   packages.each do |pkg|
