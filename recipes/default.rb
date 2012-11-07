@@ -40,11 +40,18 @@ when "ubuntu","debian"
   end
 
 when "redhat","centos","fedora","scientific","amazon"
-  %w{git bc euca2ools nc openstack-glance openstack-keystone python-swiftclient}.each do |pkg|
+  if release > "essex-final"
+    packages = [ "git" "bc" "euca2ools" "nc" "openstack-glance" "openstack-keystone" "python-swiftclient" ]
+  else
+    packages = [ "git" "bc" "euca2ools" "nc" "openstack-glance" "openstack-keystone" ]
+  end
+
+  packages.each do |pkg|
     package pkg do
       action :install
     end
   end
+
 end
 
 execute "git clone https://github.com/rcbops/exerstack" do
