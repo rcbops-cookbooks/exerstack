@@ -28,7 +28,7 @@ end
 case node["platform"]
 when "ubuntu","debian"
   if release > "essex-final"
-    packages = [ "git", "bc", "euca2ools", "netcat", "python-glanceclient", "python-swiftclient" ]
+    packages = [ "git", "bc", "euca2ools", "netcat", "python-glanceclient", "python-swiftclient", "lvm2"]
   else
     packages = [ "git", "bc", "euca2ools", "netcat", "glance-client" ]
   end
@@ -41,7 +41,7 @@ when "ubuntu","debian"
 
 when "redhat","centos","fedora","scientific","amazon"
   if release > "essex-final"
-    packages = [ "git", "bc", "euca2ools", "nc", "openstack-glance", "openstack-keystone", "python-swiftclient" ]
+    packages = [ "git", "bc", "euca2ools", "nc", "openstack-glance", "openstack-keystone", "python-swiftclient", "lvm2" ]
   else
     packages = [ "git", "bc", "euca2ools", "nc", "openstack-glance", "openstack-keystone" ]
   end
