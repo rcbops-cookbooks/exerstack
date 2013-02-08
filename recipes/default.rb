@@ -22,15 +22,17 @@
 if not node['package_component'].nil?
   release = node['package_component']
 else
-  release = "essex-final"
+  release = "folsom"
 end
 
+# TODO(breu): this needs to be moved to platform_attributes
 case node["platform"]
 when "ubuntu","debian"
-  if release > "essex-final"
-    packages = [ "git", "bc", "euca2ools", "netcat", "python-glanceclient", "python-swiftclient", "lvm2"]
-  else
+  case release
+  when "essex-final"
     packages = [ "git", "bc", "euca2ools", "netcat", "glance-client" ]
+  when "folsom"
+    packages = [ "git", "bc", "euca2ools", "netcat", "python-glanceclient", "python-swiftclient", "lvm2"]
   end
 
   packages.each do |pkg|
@@ -40,9 +42,10 @@ when "ubuntu","debian"
   end
 
 when "redhat","centos","fedora","scientific","amazon"
-  if release > "essex-final"
+  case release
+  when "folsom"
     packages = [ "git", "bc", "euca2ools", "nc", "openstack-glance", "openstack-keystone", "python-swiftclient", "lvm2" ]
-  else
+  when "essex-final"
     packages = [ "git", "bc", "euca2ools", "nc", "openstack-glance", "openstack-keystone" ]
   end
 
