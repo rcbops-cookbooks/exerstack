@@ -19,42 +19,20 @@
 
 # installs and configures the openstack cli exerciser, 'exerstack'
 
+include_recipe "osops-utils"
+
 if not node['package_component'].nil?
   release = node['package_component']
 else
   release = "folsom"
 end
 
-# TODO(breu): this needs to be moved to platform_attributes
-case node["platform"]
-when "ubuntu","debian"
-  case release
-  when "essex-final"
-    packages = [ "git", "bc", "euca2ools", "netcat", "glance-client" ]
-  when "folsom"
-    packages = [ "git", "bc", "euca2ools", "netcat", "python-glanceclient", "python-swiftclient", "lvm2"]
-  end
+platform_options = node["exerstack"]["platform"][release]
 
-  packages.each do |pkg|
-    package pkg do
-      action :install
-    end
+platform_options["packages"].each do |pkg|
+  package pkg do
+    action :install
   end
-
-when "redhat","centos","fedora","scientific","amazon"
-  case release
-  when "folsom"
-    packages = [ "git", "bc", "euca2ools", "nc", "openstack-glance", "openstack-keystone", "python-swiftclient", "lvm2" ]
-  when "essex-final"
-    packages = [ "git", "bc", "euca2ools", "nc", "openstack-glance", "openstack-keystone" ]
-  end
-
-  packages.each do |pkg|
-    package pkg do
-      action :install
-    end
-  end
-
 end
 
 execute "git clone https://github.com/rcbops/exerstack" do
