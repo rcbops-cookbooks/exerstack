@@ -25,11 +25,9 @@ export ACTIVE_TIMEOUT=300
 export DEFAULT_SSH_USER=cirros
 export DEFAULT_IMAGE_NAME=cirros-image
 
-export OS_AUTH_URL=<%= @keystone_internal_url %>
+export OS_AUTH_URL=<%= @keystone_service_url %>
 export OS_PASSWORD=<%= @keystone_admin_password %>
 export OS_USERNAME=<%= @keystone_admin_username %>
 export OS_TENANT_NAME=<%= @keystone_admin_tenantname %>
-#export SERVICE_ENDPOINT=<%= @keystone_admin_url %>
-#export SERVICE_TOKEN=<%= @keystone_admin_token %>
 
 export SWIFT_AUTH_MODE=<%= @swift_authtype %>
