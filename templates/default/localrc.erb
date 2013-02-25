@@ -11,11 +11,10 @@ export NOVA_USERNAME=<%= @keystone_admin_username %>
 export NOVA_PASSWORD=<%= @keystone_admin_password %>
 export NOVA_REGION_NAME=<%= @keystone_region_name %>
 export PACKAGESET=<%= node[:package_component] %>
+<% unless @ec2_url.nil? -%>
 export EC2_URL=<%= @ec2_url %>
-<% if @ec2_access == "" -%>
-export EC2_ACCESS_KEY=<%= node['credentials']['EC2']['admin']['access'] %>
-export EC2_SECRET_KEY=<%= node['credentials']['EC2']['admin']['secret'] %>
-<% else -%>
+<% end %>
+<% unless @ec2_access.nil? -%>
 export EC2_ACCESS_KEY=<%= @ec2_access %>
 export EC2_SECRET_KEY=<%= @ec2_secret %>
 <% end -%>
@@ -29,7 +28,5 @@ export OS_AUTH_URL=<%= @keystone_internal_url %>
 export OS_PASSWORD=<%= @keystone_admin_password %>
 export OS_USERNAME=<%= @keystone_admin_username %>
 export OS_TENANT_NAME=<%= @keystone_admin_tenantname %>
-#export SERVICE_ENDPOINT=<%= @keystone_admin_url %>
-#export SERVICE_TOKEN=<%= @keystone_admin_token %>
 
 export SWIFT_AUTH_MODE=<%= @swift_authtype %>
