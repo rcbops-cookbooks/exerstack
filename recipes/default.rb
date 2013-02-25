@@ -44,6 +44,7 @@ end
 
 keystone = get_settings_by_role("keystone", "keystone")
 ks_service_endpoint = get_access_endpoint("keystone-api", "keystone","service-api")
+ec2_creds = get_settings_by_role("keystone", "credentials")["EC2"][keystone["admin_user"]]
 
 keystone_admin_username = keystone['admin_user']
 keystone_admin_password = keystone['users'][keystone_admin_username]['password']
@@ -77,9 +78,9 @@ template "/opt/exerstack/localrc" do
   if ec2_public_endpoint
     vars["ec2_url"] = ec2_public_endpoint
   end
-  unless keystone["credentials"].nil?
-    vars["ec2_access"] = keystone["credentials"]["EC2"]["admin"]["access"]
-    vars["ec2_secret"] = keystone["credentials"]["EC2"]["admin"]["secret"]
+  unless ec2_creds.nil?
+    vars["ec2_access"] = ec2_creds["access"]
+    vars["ec2_secret"] = ec2_creds["secret"]
   end
   variables(vars)
 end
