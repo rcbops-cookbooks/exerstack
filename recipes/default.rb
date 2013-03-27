@@ -44,14 +44,16 @@ end
 
 keystone = get_settings_by_role("keystone", "keystone")
 ks_service_endpoint = get_access_endpoint("keystone-api", "keystone","service-api")
-ec2_creds = get_settings_by_role("keystone", "credentials")["EC2"][keystone["admin_user"]]
 
 keystone_admin_username = keystone['admin_user']
 keystone_admin_password = keystone['users'][keystone_admin_username]['password']
 keystone_admin_tenantname = keystone['users'][keystone_admin_username]['default_tenant']
 keystone_service_url = ks_service_endpoint['uri']
 
-ec2_public_endpoint = get_access_endpoint("nova-api-ec2", "nova", "ec2-public")["uri"]
+unless node['ha']['swift-only']
+  ec2_public_endpoint = get_access_endpoint("nova-api-ec2", "nova", "ec2-public")["uri"]
+  ec2_creds = get_settings_by_role("keystone", "credentials")["EC2"][keystone["admin_user"]]
+end
 
 # This is ghetto.. but i am trying to get nova allinone working
 swift = get_settings_by_role("swift-proxy-server", "swift")
