@@ -50,7 +50,7 @@ keystone_admin_password = keystone['users'][keystone_admin_username]['password']
 keystone_admin_tenantname = keystone['users'][keystone_admin_username]['default_tenant']
 keystone_service_url = ks_service_endpoint['uri']
 
-unless node['ha']['swift-only']
+unless rcb_safe_deref(node, "ha.swift-only")
   ec2_public_endpoint = get_access_endpoint("nova-api-ec2", "nova", "ec2-public")["uri"]
   ec2_creds = get_settings_by_role("keystone", "credentials")["EC2"][keystone["admin_user"]]
 end
