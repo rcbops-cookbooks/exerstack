@@ -10,7 +10,7 @@ export NOVA_PROJECT_ID=<%= @keystone_admin_tenantname %>
 export NOVA_USERNAME=<%= @keystone_admin_username %>
 export NOVA_PASSWORD=<%= @keystone_admin_password %>
 export NOVA_REGION_NAME=<%= @keystone_region_name %>
-export PACKAGESET=<%= node[:package_component] %>
+export PACKAGESET=grizzly
 <% unless @ec2_url.nil? -%>
 export EC2_URL=<%= @ec2_url %>
 <% end %>
