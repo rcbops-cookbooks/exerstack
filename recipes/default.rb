@@ -21,13 +21,7 @@
 
 include_recipe "osops-utils"
 
-if not node['package_component'].nil?
-  release = node['package_component']
-else
-  release = "folsom"
-end
-
-platform_options = node["exerstack"]["platform"][release]
+platform_options = node["exerstack"]["platform"]
 
 platform_options["packages"].each do |pkg|
   package pkg do
