@@ -36,7 +36,7 @@ execute "git clone https://github.com/rcbops/exerstack" do
   not_if do File.exists?("/opt/exerstack") end
 end
 
-keystone = get_settings_by_role("keystone", "keystone")
+keystone = get_settings_by_role("keystone-setup", "keystone")
 ks_service_endpoint = get_access_endpoint("keystone-api", "keystone","service-api")
 
 keystone_admin_username = keystone['admin_user']
@@ -46,7 +46,7 @@ keystone_service_url = ks_service_endpoint['uri']
 
 unless rcb_safe_deref(node, "ha.swift-only")
   ec2_public_endpoint = get_access_endpoint("nova-api-ec2", "nova", "ec2-public")["uri"]
-  ec2_creds = get_settings_by_role("keystone", "credentials")["EC2"][keystone["admin_user"]]
+  ec2_creds = get_settings_by_role("keystone-setup", "credentials")["EC2"][keystone["admin_user"]]
 end
 
 # This is ghetto.. but i am trying to get nova allinone working
