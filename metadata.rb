@@ -1,3 +1,4 @@
+name              "exerstack"
 maintainer        "Rackspace Hosting, Inc."
 license           "Apache 2.0"
 description       "exerstack module"
@@ -8,6 +9,6 @@ version           "1.0.13"
   supports os
 end
 
-%w{ osops-utils }.each do |dep|
+%w{ osops-utils sysctl }.each do |dep|
   depends dep
 end
