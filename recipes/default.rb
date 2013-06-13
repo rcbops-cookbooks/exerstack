@@ -29,28 +29,40 @@ platform_options["packages"].each do |pkg|
   end
 end
 
-execute "git clone https://github.com/rcbops/exerstack" do
-  command "git clone https://github.com/rcbops/exerstack"
-  cwd "/opt"
-  user "root"
-  not_if do File.exists?("/opt/exerstack") end
+git "/opt/exerstack" do
+  repository "https://github.com/rcbops/exerstack"
+  action :sync
 end
 
-keystone = get_settings_by_role("keystone-setup", "keystone")
-ks_service_endpoint = get_access_endpoint("keystone-api", "keystone","service-api")
+if Chef::Config[:solo]
+  keystone = node["solo"]["keystone"]
+  ks_service_endpoint = node["solo"]["ks_service_endpoint"]
+else
+  keystone = get_settings_by_role("keystone-setup", "keystone")
+  ks_service_endpoint = get_access_endpoint("keystone-api", "keystone",
+    "service-api")
+end
 
 keystone_admin_username = keystone['admin_user']
-keystone_admin_password = keystone['users'][keystone_admin_username]['password']
-keystone_admin_tenantname = keystone['users'][keystone_admin_username]['default_tenant']
+keystone_admin_password =
+  keystone['users'][keystone_admin_username]['password']
+keystone_admin_tenantname =
+  keystone['users'][keystone_admin_username]['default_tenant']
 keystone_service_url = ks_service_endpoint['uri']
 
 unless rcb_safe_deref(node, "ha.swift-only")
-  ec2_public_endpoint = get_access_endpoint("nova-api-ec2", "nova", "ec2-public")["uri"]
-  ec2_creds = get_settings_by_role("keystone-setup", "credentials")["EC2"][keystone["admin_user"]]
+  unless Chef::Config[:solo]
+    ec2_public_endpoint = get_access_endpoint("nova-api-ec2", "nova",
+      "ec2-public")["uri"]
+    ec2_creds = get_settings_by_role("keystone-setup",
+      "credentials")["EC2"][keystone["admin_user"]]
+  end
 end
 
 # This is ghetto.. but i am trying to get nova allinone working
-swift = get_settings_by_role("swift-proxy-server", "swift")
+unless Chef::Config[:solo]
+  swift = get_settings_by_role("swift-proxy-server", "swift")
+end
 if swift.nil?
   swift_authmode = "swauth"
 else
@@ -87,4 +99,3 @@ end
 #   user "root"
 #   action :nothing
 # end
-
