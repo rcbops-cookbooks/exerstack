@@ -79,7 +79,7 @@ template "/opt/exerstack/localrc" do
     "keystone_admin_password" => keystone_admin_password,
     "keystone_admin_tenantname" => keystone_admin_tenantname,
     "keystone_service_url" => keystone_service_url,
-    "keystone_region_name" => "RegionOne",
+    "keystone_region_name" => node["osops"]["region"],
     "keystone_admin_password" => keystone_admin_password,
     "swift_authtype" => swift_authmode
   }
